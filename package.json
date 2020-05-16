@@ -6,19 +6,19 @@
   },
   "dependencies": {
     "blessed": "^0.1.81",
-    "tslib": "^1.11.2",
-    "typescript": "^3.8.3"
+    "tslib": "^2.0.0",
+    "typescript": "^3.9.2"
   },
   "devDependencies": {
     "@types/blessed": "0.1.17",
-    "@types/node": "^13.13.5",
-    "@typescript-eslint/eslint-plugin": "^2.31.0",
-    "@typescript-eslint/parser": "^2.31.0",
+    "@types/node": "^14.0.1",
+    "@typescript-eslint/eslint-plugin": "^2.33.0",
+    "@typescript-eslint/parser": "^2.33.0",
     "eslint": "^7.0.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
     "google-auth-library": "^6.0.0",
-    "googleapis": "^50.0.0",
+    "googleapis": "^51.0.0",
     "ts-node": "^8.10.1"
   }
 }
