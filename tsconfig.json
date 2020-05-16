@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "target": "ESNext",
+    "target": "ES6",
     "module": "commonjs",
     "lib": [
-      "ESNext",
+      "ES6",
       "scripthost"
     ],
     "outDir": "dist",
