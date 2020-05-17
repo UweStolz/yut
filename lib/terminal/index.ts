@@ -1,9 +1,11 @@
 import blessed from 'blessed';
-import getVideoList, { SearchResult } from './google/getVideoList';
+import getVideoList, { SearchResult } from '../google/getVideoList';
+import { exitApp, getWindow } from '../eletron/main';
+
 
 let tempSearchResult: SearchResult[] = [];
 
-function createScreen(): void {
+export default function createScreen(): void {
   const screen = blessed.screen({
     title: 'YUT - Youtube Terminal',
     smartCSR: true,
@@ -56,10 +58,17 @@ function createScreen(): void {
         searchResultBox.addItem(item.title);
       });
       searchResultBox.render();
+      const win = getWindow();
+      if (win) {
+        await win.webContents.executeJavaScript('playAudio()');
+      }
     }
   });
 
-  screen.key(['escape', 'C-c'], () => process.exit(0));
+  screen.key(['escape', 'C-c'], () => {
+    exitApp();
+    process.exit(0);
+  });
 
   screen.append(searchResultBox);
 
