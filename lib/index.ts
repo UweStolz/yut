@@ -1,4 +1,5 @@
-import './eletron/main';
+import './setEnvironment';
+import './electron/main';
 import createScreen from './terminal';
 
 createScreen();
