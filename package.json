@@ -10,6 +10,7 @@
     "blessed": "^0.1.81",
     "electron": "^9.0.0",
     "howler": "^2.2.0",
+    "neo-blessed": "^0.2.0",
     "tmp": "^0.2.1",
     "tslib": "^2.0.0",
     "typescript": "^3.9.3",
