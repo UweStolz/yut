@@ -1,10 +1,7 @@
 import blessed, { Widgets } from 'neo-blessed';
 import { appendFileSync } from 'fs';
-// @ts-ignore
-import readLastLines from 'read-last-lines';
-import { EOL } from 'os';
 import getVideoList from '../google/getVideoList';
-import downloadAudioStream, { getPathToAudioFile, cleanUpTempFiles } from '../utils/downloadAudioStream';
+import utils from './utils';
 import { exitApp, getWindow } from '../electron/main';
 
 interface AudioMapping {
@@ -12,23 +9,10 @@ interface AudioMapping {
 }
 const audioMapping: AudioMapping = {};
 
-async function getLastLogEntries(searchLog: Widgets.Log): Promise<void> {
-  try {
-    const lastLogEntries = await readLastLines.read('history.log', 20) as string;
-    const lastLines = lastLogEntries.split(EOL);
-    lastLines.forEach((line) => {
-      const trimmedEntry = line.trim();
-      searchLog.add(trimmedEntry);
-    });
-  } catch {
-    // Do nothing
-  }
-}
-
 async function download(id: string, progressBar: Widgets.ProgressBarElement, screen: Widgets.Screen): Promise<void> {
   if (!audioMapping[id]) {
-    await downloadAudioStream(id, progressBar, screen);
-    const path = getPathToAudioFile();
+    await utils.downloadAudioStream(id, progressBar, screen);
+    const path = utils.getPathToAudioFile();
     audioMapping[id] = path;
   }
 }
@@ -176,12 +160,12 @@ export default function createScreen(): void {
 
   screen.key(['escape', 'C-c'], () => {
     const filePaths = Object.values(audioMapping);
-    cleanUpTempFiles(filePaths);
+    utils.cleanUpTempFiles(filePaths);
     screen.destroy();
     exitApp();
   });
 
-  getLastLogEntries(searchLog);
+  utils.getLastLogEntries(searchLog);
 
   screen.append(searchResultTable);
   screen.append(searchLog);
