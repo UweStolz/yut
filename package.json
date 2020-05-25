@@ -11,6 +11,7 @@
     "electron": "^9.0.0",
     "howler": "^2.2.0",
     "neo-blessed": "^0.2.0",
+    "read-last-lines": "^1.7.2",
     "tmp": "^0.2.1",
     "tslib": "^2.0.0",
     "typescript": "^3.9.3",
