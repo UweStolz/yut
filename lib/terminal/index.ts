@@ -122,19 +122,21 @@ export default function createScreen(): void {
 
 
   textbox.on('submit', async (data) => {
-    appendFileSync('history.log', `\n${data}`);
-    searchLog.add(data);
-    const searchResult = await getVideoList(data);
-    if (searchResult && searchResult.length > 0) {
-      searchResultTable.clearItems();
-      const tableData = [
-        ['ID', 'Title'],
-        ...searchResult,
-      ];
-      textbox.clearValue();
-      searchResultTable.setData(tableData);
-      screen.render();
-      searchResultTable.focus();
+    if (data.length > 0) {
+      appendFileSync('history.log', `\n${data}`);
+      searchLog.add(data);
+      const searchResult = await getVideoList(data);
+      if (searchResult && searchResult.length > 0) {
+        searchResultTable.clearItems();
+        const tableData = [
+          ['ID', 'Title'],
+          ...searchResult,
+        ];
+        textbox.clearValue();
+        searchResultTable.setData(tableData);
+        screen.render();
+        searchResultTable.focus();
+      }
     }
   });
 
