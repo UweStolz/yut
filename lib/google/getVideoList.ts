@@ -15,7 +15,7 @@ export default async function getVideoList(query: string): Promise<SearchResult[
       q: query,
       fields: 'items(id(videoId),snippet(title))',
       type: 'video',
-      maxResults: 10,
+      maxResults: 35,
       part: 'snippet',
     });
     result = data.items?.map((item) => {
