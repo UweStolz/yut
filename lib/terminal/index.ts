@@ -2,7 +2,7 @@ import blessed, { Widgets } from 'neo-blessed';
 import { appendFileSync } from 'fs';
 import getVideoList from '../google/getVideoList';
 import utils from './utils';
-import { exitApp, getWindow } from '../electron/main';
+import { exitApp } from '../electron/main';
 
 interface AudioMapping {
   [id: string]: string;
@@ -17,27 +17,6 @@ async function download(id: string, progressBar: Widgets.ProgressBarElement, scr
   }
 }
 
-async function executeInRenderer(id: string, functionName: string): Promise<void> {
-  const src = audioMapping[id];
-  const functionToExecute = `${functionName}('${src}');`;
-  const win = getWindow();
-  if (win) {
-    await win.webContents.executeJavaScript(functionToExecute, true);
-  }
-}
-
-async function play(id: string): Promise<void> {
-  await executeInRenderer(id, 'playAudio');
-}
-
-async function pause(id: string): Promise<void> {
-  await executeInRenderer(id, 'pauseAudio');
-}
-
-async function stop(id: string): Promise<void> {
-  await executeInRenderer(id, 'stopAudio');
-}
-
 export default function createScreen(): void {
   const screen = blessed.screen({
     title: 'YUT - Youtube Terminal',
@@ -45,11 +24,13 @@ export default function createScreen(): void {
     autoPadding: true,
     fullUnicode: true,
     dockBorders: true,
+    sendFocus: true,
   });
 
   const searchResultTable = blessed.listtable({
     top: 0,
     parent: screen,
+    label: 'Search results',
     align: 'left',
     width: '80%',
     height: '80%',
@@ -78,12 +59,24 @@ export default function createScreen(): void {
     parent: screen,
     label: 'History',
     top: 0,
+    focusable: true,
+    keys: true,
     mouse: true,
     left: '+80%',
     width: '20%',
-    height: '50%',
+    height: '40%',
     border: {
       type: 'line',
+    },
+    scrollback: 100,
+    scrollbar: {
+      ch: ' ',
+      track: {
+        bg: 'blue',
+      },
+      style: {
+        inverse: true,
+      },
     },
   });
 
@@ -92,7 +85,7 @@ export default function createScreen(): void {
     mouse: true,
     left: 0,
     top: '+80%',
-    width: '100%',
+    width: '80%',
     height: '20%',
     keys: true,
     border: {
@@ -150,7 +143,7 @@ export default function createScreen(): void {
     screen.render();
     const id = data.content.split(' ')[0];
     await download(id, progressBar, screen);
-    // await play(id);
+    // utils.mediaControls.playMedia(id, audioMapping);
   });
 
   progressBar.on('complete', () => {
@@ -165,11 +158,20 @@ export default function createScreen(): void {
     exitApp();
   });
 
-  utils.getLastLogEntries(searchLog);
+  const nodes = [
+    searchResultTable,
+    searchLog,
+    textbox,
+  ];
 
-  screen.append(searchResultTable);
-  screen.append(searchLog);
-  screen.append(textbox);
+  nodes.forEach((node) => {
+    screen.append(node);
+    node.enableMouse();
+    node.enableKeys();
+    screen.focusPush(node);
+  });
+
+  utils.getLastLogEntries(searchLog);
 
   textbox.focus();
 
