@@ -15,6 +15,7 @@ export default async function getVideoList(query: string): Promise<SearchResult[
       q: query,
       fields: 'items(id(videoId),snippet(title))',
       type: 'video',
+      videoCategoryId: '10', // music
       maxResults: 35,
       part: 'snippet',
     });
