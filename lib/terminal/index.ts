@@ -1,5 +1,8 @@
 import blessed, { Widgets } from 'neo-blessed';
 import { appendFileSync } from 'fs';
+// @ts-ignore
+import readLastLines from 'read-last-lines';
+import { EOL } from 'os';
 import getVideoList from '../google/getVideoList';
 import downloadAudioStream, { getPathToAudioFile, cleanUpTempFiles } from '../utils/downloadAudioStream';
 import { exitApp, getWindow } from '../electron/main';
@@ -8,6 +11,19 @@ interface AudioMapping {
   [id: string]: string;
 }
 const audioMapping: AudioMapping = {};
+
+async function getLastLogEntries(searchLog: Widgets.Log): Promise<void> {
+  try {
+    const lastLogEntries = await readLastLines.read('history.log', 20) as string;
+    const lastLines = lastLogEntries.split(EOL);
+    lastLines.forEach((line) => {
+      const trimmedEntry = line.trim();
+      searchLog.add(trimmedEntry);
+    });
+  } catch {
+    // Do nothing
+  }
+}
 
 async function download(id: string, progressBar: Widgets.ProgressBarElement, screen: Widgets.Screen): Promise<void> {
   if (!audioMapping[id]) {
@@ -75,7 +91,16 @@ export default function createScreen(): void {
   });
 
   const searchLog = blessed.log({
-
+    parent: screen,
+    label: 'History',
+    top: 0,
+    mouse: true,
+    left: '+80%',
+    width: '20%',
+    height: '50%',
+    border: {
+      type: 'line',
+    },
   });
 
   const textbox = blessed.textbox({
@@ -94,9 +119,11 @@ export default function createScreen(): void {
 
   const progressBar = blessed.progressbar({
     parent: screen,
+    label: 'Download progress',
     border: {
       type: 'line',
     },
+    pch: '#',
     style: {
       fg: 'blue',
       bg: 'default',
@@ -116,7 +143,10 @@ export default function createScreen(): void {
     orientation: 'horizontal',
   });
 
+
   textbox.on('submit', async (data) => {
+    appendFileSync('history.log', `\n${data}`);
+    searchLog.add(data);
     const searchResult = await getVideoList(data);
     if (searchResult && searchResult.length > 0) {
       searchResultTable.clearItems();
@@ -126,7 +156,7 @@ export default function createScreen(): void {
       ];
       textbox.clearValue();
       searchResultTable.setData(tableData);
-      searchResultTable.render();
+      screen.render();
       searchResultTable.focus();
     }
   });
@@ -147,10 +177,11 @@ export default function createScreen(): void {
   screen.key(['escape', 'C-c'], () => {
     const filePaths = Object.values(audioMapping);
     cleanUpTempFiles(filePaths);
-    exitApp();
     screen.destroy();
-    process.exit(0);
+    exitApp();
   });
+
+  getLastLogEntries(searchLog);
 
   screen.append(searchResultTable);
   screen.append(searchLog);
