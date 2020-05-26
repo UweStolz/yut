@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 import { youtube_v3 } from 'googleapis';
 import getYoutubeClient from './getYoutubeClient';
 

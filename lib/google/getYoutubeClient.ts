@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 import { google, youtube_v3 } from 'googleapis';
 
 function decryptApiKey(): string {
