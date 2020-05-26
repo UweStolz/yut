@@ -1,5 +1,5 @@
 import blessed, { Widgets } from 'neo-blessed';
-import { appendFileSync } from 'fs';
+import { appendFileSync, existsSync } from 'fs';
 import performSearch from '../google/getVideoList';
 import * as utils from './utils';
 import { exitApp } from '../electron/main';
@@ -152,10 +152,13 @@ export default function createScreen(): void {
   });
 
   searchResultTable.on('select', async (data) => {
-    screen.append(progressBar);
-    screen.render();
     const id = data.content.split(' ')[0];
-    await download(id, progressBar, screen);
+    const doesFileExist = existsSync(audioMapping[id]);
+    if (!doesFileExist) {
+      screen.append(progressBar);
+      screen.render();
+      await download(id, progressBar, screen);
+    }
     const src = audioMapping[id];
     await utils.mediaControls.playMedia(src);
   });
