@@ -1,6 +1,6 @@
 import blessed, { Widgets } from 'neo-blessed';
 import { appendFileSync } from 'fs';
-import getVideoList from '../google/getVideoList';
+import performSearch from '../google/getVideoList';
 import utils from './utils';
 import { exitApp } from '../electron/main';
 
@@ -125,11 +125,11 @@ export default function createScreen(): void {
     if (data.length > 0) {
       appendFileSync('history.log', `\n${data}`);
       searchLog.add(data);
-      const searchResult = await getVideoList(data);
+      const searchResult = await performSearch(data);
       if (searchResult && searchResult.length > 0) {
         searchResultTable.clearItems();
         const tableData = [
-          ['ID', 'Title'],
+          ['ID', 'Title', 'Duration'],
           ...searchResult,
         ];
         textbox.clearValue();
