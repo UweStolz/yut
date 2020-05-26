@@ -7,27 +7,26 @@
     "build:watch": "yarn run tsc -w -p ./tsconfig.json"
   },
   "dependencies": {
-    "blessed": "^0.1.81",
     "electron": "^9.0.0",
+    "googleapis": "^51.0.0",
     "howler": "^2.2.0",
     "neo-blessed": "^0.2.0",
     "read-last-lines": "^1.7.2",
     "tmp": "^0.2.1",
     "tslib": "^2.0.0",
-    "typescript": "^3.9.3",
-    "ytdl-core": "^2.1.3"
+    "ytdl-core": "^2.1.5"
   },
   "devDependencies": {
     "@types/blessed": "0.1.17",
     "@types/howler": "^2.1.2",
     "@types/node": "^12.0.0",
     "@types/tmp": "^0.2.0",
-    "@typescript-eslint/eslint-plugin": "^2.34.0",
-    "@typescript-eslint/parser": "^2.34.0",
-    "eslint": "^7.0.0",
+    "@typescript-eslint/eslint-plugin": "^3.0.1",
+    "@typescript-eslint/parser": "^3.0.1",
+    "eslint": "^7.1.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
-    "googleapis": "^51.0.0",
-    "ts-node": "^8.10.1"
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.3"
   }
 }

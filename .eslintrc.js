@@ -26,7 +26,7 @@ module.exports = {
         devDependencies: true, optionalDependencies: true, peerDependencies: true,
       },
     ],
-    '@typescript-eslint/ban-ts-ignore': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
     'max-len': [
       0,
       {
