@@ -1,23 +1,24 @@
 import { getWindow } from '../../electron/main';
 
-async function executeInRenderer(id: string, mapping: any, functionName: string): Promise<void> {
-  const src = mapping[id];
-  const functionToExecute = `${functionName}('${src}');`;
+async function executeInRenderer(functionName: string, src?: string): Promise<void> {
+  const functionToExecute = src
+    ? `${functionName}('${src}');`
+    : `${functionName}();`;
   const win = getWindow();
   if (win) {
     await win.webContents.executeJavaScript(functionToExecute, true);
   }
 }
 export default {
-  async playMedia(id: string, mapping: any): Promise<void> {
-    await executeInRenderer(id, mapping, 'playAudio');
+  async playMedia(src: string): Promise<void> {
+    await executeInRenderer('playAudio', src);
   },
 
-  async pauseMedia(id: string, mapping: any): Promise<void> {
-    await executeInRenderer(id, mapping, 'pauseAudio');
+  async pauseMedia(): Promise<void> {
+    await executeInRenderer('pauseAudio');
   },
 
-  async stopMedia(id: string, mapping: any): Promise<void> {
-    await executeInRenderer(id, mapping, 'stopAudio');
+  async stopMedia(): Promise<void> {
+    await executeInRenderer('stopAudio');
   },
 };
