@@ -2,7 +2,7 @@ import downloadAudioStream, { cleanUpTempFiles, getPathToAudioFile } from './dow
 import getLastLogEntries from './getLastLogEntries';
 import mediaControls from './mediaControls';
 
-export default {
+export {
   downloadAudioStream,
   cleanUpTempFiles,
   getPathToAudioFile,

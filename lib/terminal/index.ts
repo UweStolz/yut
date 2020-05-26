@@ -1,12 +1,17 @@
 import blessed, { Widgets } from 'neo-blessed';
 import { appendFileSync } from 'fs';
 import performSearch from '../google/getVideoList';
-import utils from './utils';
+import * as utils from './utils';
 import { exitApp } from '../electron/main';
+import form from './form';
+
 
 interface AudioMapping {
   [id: string]: string;
 }
+
+const currentId = '';
+
 const audioMapping: AudioMapping = {};
 
 async function download(id: string, progressBar: Widgets.ProgressBarElement, screen: Widgets.Screen): Promise<void> {
@@ -15,6 +20,11 @@ async function download(id: string, progressBar: Widgets.ProgressBarElement, scr
     const path = utils.getPathToAudioFile();
     audioMapping[id] = path;
   }
+}
+
+export function getMediaSrc(): string {
+  const src = audioMapping[currentId];
+  return src;
 }
 
 export default function createScreen(): void {
@@ -120,6 +130,7 @@ export default function createScreen(): void {
     orientation: 'horizontal',
   });
 
+  const mediaForm = form(screen);
 
   textbox.on('submit', async (data) => {
     if (data.length > 0) {
@@ -145,7 +156,8 @@ export default function createScreen(): void {
     screen.render();
     const id = data.content.split(' ')[0];
     await download(id, progressBar, screen);
-    // utils.mediaControls.playMedia(id, audioMapping);
+    const src = audioMapping[id];
+    await utils.mediaControls.playMedia(src);
   });
 
   progressBar.on('complete', () => {
@@ -164,13 +176,13 @@ export default function createScreen(): void {
     searchResultTable,
     searchLog,
     textbox,
+    mediaForm,
   ];
 
   nodes.forEach((node) => {
     screen.append(node);
     node.enableMouse();
     node.enableKeys();
-    screen.focusPush(node);
   });
 
   utils.getLastLogEntries(searchLog);
