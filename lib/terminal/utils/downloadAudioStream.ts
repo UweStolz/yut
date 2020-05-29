@@ -1,7 +1,7 @@
 import { createWriteStream, unlinkSync } from 'fs';
 import { tmpNameSync } from 'tmp';
 import ytdl, { downloadOptions } from 'ytdl-core';
-import { Widgets } from 'neo-blessed';
+import { Widgets } from 'blessed';
 import { resolve as resolvePath } from 'path';
 
 let path: string;

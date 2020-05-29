@@ -1,7 +1,7 @@
 // @ts-ignore
 import readLastLines from 'read-last-lines';
 import { EOL } from 'os';
-import { Widgets } from 'neo-blessed';
+import { Widgets } from 'blessed';
 
 export default async function getLastLogEntries(searchLog: Widgets.Log): Promise<void> {
   try {

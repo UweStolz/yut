@@ -1,4 +1,5 @@
-import blessed, { Widgets } from 'neo-blessed';
+import blessed, { Widgets } from 'blessed';
+// import contrib from 'blessed-contrib';
 import { appendFileSync, existsSync } from 'fs';
 import performSearch from '../google/getVideoList';
 import * as utils from './utils';

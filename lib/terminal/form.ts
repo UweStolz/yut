@@ -1,4 +1,4 @@
-import blessed, { Widgets } from 'neo-blessed';
+import blessed, { Widgets } from 'blessed';
 import { mediaControls } from './utils';
 import { getMediaSrc } from './index';
 
