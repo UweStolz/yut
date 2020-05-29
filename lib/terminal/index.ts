@@ -111,7 +111,8 @@ export default function createScreen(): void {
     border: {
       type: 'line',
     },
-    pch: '#',
+    pch: '❚',
+    shadow: true,
     style: {
       fg: 'blue',
       bg: 'default',

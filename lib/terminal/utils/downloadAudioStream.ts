@@ -43,6 +43,7 @@ export default async function downloadAudioStream(id: string, progressBar: Widge
     audioStream.on('progress', (chunk, totalDownloaded, total) => {
       const percentageDownloaded = (totalDownloaded / total) * 100;
       progressBar.setProgress(percentageDownloaded);
+      progressBar.setLabel(`Download Progress - ${percentageDownloaded.toFixed(0)}%`);
       screen.render();
     });
     audioStream.on('end', () => {
