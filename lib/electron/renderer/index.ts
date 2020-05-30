@@ -4,21 +4,27 @@ import { Howl, Howler } from 'howler';
 Howler.usingWebAudio = true;
 let sound: Howl;
 let soundId: undefined|number;
+let analyser: AnalyserNode;
+let dataArray: undefined|Uint8Array;
+
+let interval: NodeJS.Timeout;
+
+function update(): any {
+  requestAnimationFrame(update);
+  if (sound.playing() && dataArray) {
+    analyser.getByteFrequencyData(dataArray);
+    const data = dataArray.map((entry: number) => entry / 2);
+    ipcRenderer.send('analyser', data);
+  }
+}
 
 function getFrequencyData(): any {
-  const analyser = Howler.ctx.createAnalyser();
+  analyser = Howler.ctx.createAnalyser();
   Howler.masterGain.connect(analyser);
-  analyser.fftSize = 64;
+  analyser.fftSize = 1024;
   const bufferLength = analyser.frequencyBinCount;
-  const dataArray = new Uint8Array(bufferLength);
-  analyser.getByteFrequencyData(dataArray);
-  setInterval(() => {
-    if (sound.playing()) {
-      analyser.getByteTimeDomainData(dataArray);
-      const data = dataArray.map((entry: number) => entry / 2);
-      ipcRenderer.send('analyser', data);
-    }
-  }, 1000);
+  dataArray = new Uint8Array(bufferLength);
+  update();
 }
 
 
@@ -44,13 +50,13 @@ export function playAudio(src: string): void {
 export function pauseAudio(): void {
   if (soundId) {
     sound.pause(soundId);
-    clearInterval();
+    clearInterval(interval);
   }
 }
 
 export function stopAudio(): void {
   if (soundId) {
     sound.stop(soundId);
-    clearInterval();
+    clearInterval(interval);
   }
 }

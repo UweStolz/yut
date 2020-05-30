@@ -1,6 +1,7 @@
 import blessed, { Widgets } from 'blessed';
-// import contrib from 'blessed-contrib';
 import { appendFileSync, existsSync } from 'fs';
+import { ipcMain } from 'electron';
+import calculatePoints from './calculatePoints';
 import performSearch from '../google/getVideoList';
 import * as utils from './utils';
 import { exitApp } from '../electron/main';
@@ -92,6 +93,7 @@ export default function createScreen(): void {
   });
 
   const textbox = blessed.textbox({
+    label: 'Command line interface',
     parent: screen,
     mouse: true,
     left: 0,
@@ -132,6 +134,18 @@ export default function createScreen(): void {
     orientation: 'horizontal',
   });
 
+  const barChart = blessed.box({
+    parent: screen,
+    label: 'Visualization',
+    top: '+55%',
+    left: '+80%',
+    width: '20%',
+    height: '40%',
+    border: {
+      type: 'line',
+    },
+  });
+
   const mediaForm = form(screen);
 
   textbox.on('submit', async (data) => {
@@ -165,6 +179,12 @@ export default function createScreen(): void {
     await utils.mediaControls.playMedia(src);
   });
 
+  ipcMain.on('analyser', (event, arg) => {
+    const data = calculatePoints(arg);
+    barChart.setContent(data);
+    screen.render();
+  });
+
   progressBar.on('complete', () => {
     progressBar.destroy();
     screen.render();
@@ -184,6 +204,7 @@ export default function createScreen(): void {
     mediaForm,
   ];
 
+  // screen.append(barChart);
   nodes.forEach((node) => {
     screen.append(node);
     node.enableMouse();
