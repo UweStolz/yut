@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "blessed": "^0.1.81",
-    "blessed-contrib": "^4.8.20",
+    "bresenham": "^0.0.4",
+    "drawille": "^1.1.1",
     "electron": "^9.0.0",
     "googleapis": "^51.0.0",
     "howler": "^2.2.0",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@types/blessed": "0.1.17",
+    "@types/bresenham": "^0.0.0",
     "@types/howler": "^2.1.2",
     "@types/node": "^12.0.0",
     "@types/tmp": "^0.2.0",
