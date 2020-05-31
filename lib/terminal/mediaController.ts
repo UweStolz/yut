@@ -2,8 +2,8 @@ import blessed, { Widgets } from 'blessed';
 import { mediaControls } from './utils';
 import { getMediaSrc } from './index';
 
-export default function form(screen: Widgets.Screen): Widgets.FormElement<unknown> {
-  const mediaForm = blessed.form({
+export default function mediaController(screen: Widgets.Screen): Widgets.BoxElement {
+  const mediaForm = blessed.box({
     label: 'Media Controls',
     parent: screen,
     border: {
@@ -90,6 +90,30 @@ export default function form(screen: Widgets.Screen): Widgets.FormElement<unknow
     },
   });
 
+  const muteButton = blessed.button({
+    parent: mediaForm,
+    mouse: true,
+    keys: true,
+    shrink: true,
+    padding: {
+      left: 1,
+      right: 1,
+    },
+    left: '15%',
+    top: 1,
+    name: 'Mute',
+    content: 'Mute',
+    style: {
+      bg: 'blue',
+      focus: {
+        bg: 'red',
+      },
+      hover: {
+        bg: 'red',
+      },
+    },
+  });
+
   playButton.on('press', async () => {
     const src = getMediaSrc();
     if (src) {
@@ -105,7 +129,11 @@ export default function form(screen: Widgets.Screen): Widgets.FormElement<unknow
     await mediaControls.stopMedia();
   });
 
-  const nodes = [playButton, pauseButton, stopButton];
+  muteButton.on('press', async () => {
+    await mediaControls.muteMedia();
+  });
+
+  const nodes = [playButton, pauseButton, stopButton, muteButton];
 
   nodes.forEach((node) => {
     mediaForm.append(node);

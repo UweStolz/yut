@@ -21,4 +21,8 @@ export default {
   async stopMedia(): Promise<void> {
     await executeInRenderer('stopAudio');
   },
+
+  async muteMedia(): Promise<void> {
+    await executeInRenderer('muteAudio');
+  },
 };

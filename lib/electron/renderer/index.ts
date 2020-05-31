@@ -6,6 +6,7 @@ let sound: Howl;
 let soundId: undefined|number;
 let analyser: AnalyserNode;
 let dataArray: undefined|Uint8Array;
+let isMuted = false;
 
 function update(): void {
   requestAnimationFrame(update);
@@ -31,6 +32,16 @@ function initializeSound(src: string): void {
     src,
     html5: false,
   });
+}
+
+export function muteAudio(): void {
+  if (isMuted) {
+    Howler.mute(false);
+    isMuted = false;
+  } else {
+    Howler.mute(true);
+    isMuted = true;
+  }
 }
 
 export function playAudio(src: string): void {

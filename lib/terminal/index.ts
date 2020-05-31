@@ -5,7 +5,7 @@ import calculatePoints from './calculatePoints';
 import performSearch from '../google/getVideoList';
 import * as utils from './utils';
 import { exitApp } from '../electron/main';
-import form from './form';
+import mediaController from './mediaController';
 
 
 interface AudioMapping {
@@ -154,7 +154,7 @@ export default function createScreen(): void {
     },
   });
 
-  const mediaForm = form(screen);
+  const controller = mediaController(screen);
 
   textbox.on('submit', async (data) => {
     if (data.length > 0) {
@@ -209,7 +209,7 @@ export default function createScreen(): void {
     searchResultTable,
     searchLog,
     textbox,
-    mediaForm,
+    controller,
   ];
 
   screen.append(barChart);
