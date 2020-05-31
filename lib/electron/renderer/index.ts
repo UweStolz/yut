@@ -7,9 +7,7 @@ let soundId: undefined|number;
 let analyser: AnalyserNode;
 let dataArray: undefined|Uint8Array;
 
-let interval: NodeJS.Timeout;
-
-function update(): any {
+function update(): void {
   requestAnimationFrame(update);
   if (sound.playing() && dataArray) {
     analyser.getByteFrequencyData(dataArray);
@@ -18,7 +16,7 @@ function update(): any {
   }
 }
 
-function getFrequencyData(): any {
+function getFrequencyData(): void {
   analyser = Howler.ctx.createAnalyser();
   Howler.masterGain.connect(analyser);
   analyser.fftSize = 1024;
@@ -50,13 +48,11 @@ export function playAudio(src: string): void {
 export function pauseAudio(): void {
   if (soundId) {
     sound.pause(soundId);
-    clearInterval(interval);
   }
 }
 
 export function stopAudio(): void {
   if (soundId) {
     sound.stop(soundId);
-    clearInterval(interval);
   }
 }
