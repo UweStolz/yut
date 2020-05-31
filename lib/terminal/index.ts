@@ -46,6 +46,7 @@ export default function createScreen(): void {
     align: 'left',
     width: '80%',
     height: '80%',
+    shrink: false,
     focusable: true,
     keys: true,
     mouse: true,
@@ -136,11 +137,18 @@ export default function createScreen(): void {
 
   const barChart = blessed.box({
     parent: screen,
+    focusable: false,
+    clickable: false,
+    keys: false,
+    keyable: false,
+    draggable: false,
     label: 'Visualization',
+    valign: 'bottom',
+    align: 'center',
     top: '+55%',
     left: '+80%',
     width: '20%',
-    height: '40%',
+    height: '45%',
     border: {
       type: 'line',
     },
@@ -204,7 +212,7 @@ export default function createScreen(): void {
     mediaForm,
   ];
 
-  // screen.append(barChart);
+  screen.append(barChart);
   nodes.forEach((node) => {
     screen.append(node);
     node.enableMouse();

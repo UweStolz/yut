@@ -11,7 +11,7 @@ function update(): void {
   requestAnimationFrame(update);
   if (sound.playing() && dataArray) {
     analyser.getByteFrequencyData(dataArray);
-    const data = dataArray.map((entry: number) => entry / 2);
+    const data = dataArray.map((entry: number) => entry / 4);
     ipcRenderer.send('analyser', data);
   }
 }
@@ -19,7 +19,7 @@ function update(): void {
 function getFrequencyData(): void {
   analyser = Howler.ctx.createAnalyser();
   Howler.masterGain.connect(analyser);
-  analyser.fftSize = 1024;
+  analyser.fftSize = 128;
   const bufferLength = analyser.frequencyBinCount;
   dataArray = new Uint8Array(bufferLength);
   update();
