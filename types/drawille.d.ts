@@ -27,7 +27,6 @@ declare module 'drawille' {
          */
         frame(delimiter?: string): string;
     }
-
     var Canvas: {
         /**
          * @param width must be multiple of 2.
