@@ -1,4 +1,3 @@
-// @ts-ignore
 import Canvas from 'drawille';
 import bresenham from 'bresenham/generator';
 
