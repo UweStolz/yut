@@ -37,8 +37,10 @@ export default async function getLastLogEntries(searchLog: Widgets.Log): Promise
     if (doesFileExist) {
       const lastLines = getLogFile();
       lastLines.forEach((line) => {
-        const trimmedEntry = line.trim();
-        searchLog.add(trimmedEntry);
+        if (line.length > 0) {
+          const trimmedEntry = line.trim();
+          searchLog.add(trimmedEntry);
+        }
       });
     }
   } catch {
