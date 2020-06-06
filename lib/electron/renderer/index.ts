@@ -1,6 +1,5 @@
 import { ipcRenderer } from 'electron';
 import { Howl, Howler } from 'howler';
-import { appendFileSync } from 'fs';
 
 Howler.usingWebAudio = true;
 let sound: Howl;
