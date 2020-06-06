@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron';
 import { Howl, Howler } from 'howler';
+import { appendFileSync } from 'fs';
 
 Howler.usingWebAudio = true;
 let sound: Howl;
@@ -7,6 +8,14 @@ let soundId: undefined|number;
 let analyser: AnalyserNode;
 let dataArray: undefined|Uint8Array;
 let isMuted = false;
+let songPositionIntervalTimout: NodeJS.Timeout;
+
+function getCurrentPosition() {
+  songPositionIntervalTimout = setInterval(() => {
+    const currentSongPosition = sound.seek(undefined, soundId) as number;
+    ipcRenderer.send('currentSongPosition', currentSongPosition.toFixed(0));
+  }, 1000);
+}
 
 function update(): void {
   requestAnimationFrame(update);
@@ -25,7 +34,6 @@ function getFrequencyData(): void {
   dataArray = new Uint8Array(bufferLength);
   update();
 }
-
 
 function initializeSound(src: string): void {
   sound = new Howl({
@@ -51,19 +59,26 @@ export function playAudio(src: string): void {
   if (!sound.playing()) {
     soundId = sound.play();
     sound.on('play', () => {
+      getCurrentPosition();
       getFrequencyData();
+    });
+    sound.on('end', () => {
+      clearInterval(songPositionIntervalTimout);
+      ipcRenderer.send('soundEnd');
     });
   }
 }
 
 export function pauseAudio(): void {
   if (soundId) {
+    clearInterval(songPositionIntervalTimout);
     sound.pause(soundId);
   }
 }
 
 export function stopAudio(): void {
   if (soundId) {
+    clearInterval(songPositionIntervalTimout);
     sound.stop(soundId);
   }
 }

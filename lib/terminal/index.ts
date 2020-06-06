@@ -13,8 +13,8 @@ interface AudioMapping {
 }
 
 const currentId = '';
-
 const audioMapping: AudioMapping = {};
+let currentSongTotalLength: string;
 
 async function download(id: string, progressBar: Widgets.ProgressBarElement, screen: Widgets.Screen): Promise<void> {
   if (!audioMapping[id]) {
@@ -99,13 +99,28 @@ export default function createScreen(): void {
     mouse: true,
     left: 0,
     top: '+80%',
-    width: '80%',
+    width: '60%',
     height: '20%',
     keys: true,
     border: {
       type: 'line',
     },
     input: true,
+  });
+
+  const informationBox = blessed.textbox({
+    label: 'Song information',
+    parent: screen,
+    mouse: false,
+    keys: false,
+    input: false,
+    left: '+60%',
+    top: '+80%',
+    width: '20%',
+    height: '20%',
+    border: {
+      type: 'line',
+    },
   });
 
   const progressBar = blessed.progressbar({
@@ -140,6 +155,8 @@ export default function createScreen(): void {
     focusable: false,
     clickable: false,
     keys: false,
+    mouse: false,
+    input: false,
     keyable: false,
     draggable: false,
     label: 'Visualization',
@@ -176,7 +193,9 @@ export default function createScreen(): void {
   });
 
   searchResultTable.on('select', async (data) => {
-    const id = data.content.split(' ')[0];
+    const selectedLine = data.content.trim().split(' ');
+    const id = selectedLine[0];
+    currentSongTotalLength = utils.formatTotalSongLength(selectedLine[selectedLine.length - 1]);
     const doesFileExist = existsSync(audioMapping[id]);
     if (!doesFileExist) {
       screen.append(progressBar);
@@ -185,6 +204,24 @@ export default function createScreen(): void {
     }
     const src = audioMapping[id];
     await utils.mediaControls.playMedia(src);
+  });
+
+  ipcMain.on('currentSongPosition', (event, arg) => {
+    let currenTimeStamp = '';
+    if (currentSongTotalLength.length >= 6) {
+      currenTimeStamp = new Date(arg * 1000).toISOString().substr(11, 8);
+    } else {
+      currenTimeStamp = new Date(arg * 1000).toISOString().substr(14, 5);
+    }
+    const content = `${currenTimeStamp}/${currentSongTotalLength}`;
+    informationBox.setContent(content);
+    screen.render();
+  });
+
+  ipcMain.on('soundEnd', () => {
+    informationBox.setContent('');
+    barChart.setContent('');
+    screen.render();
   });
 
   ipcMain.on('analyser', (event, arg) => {
@@ -205,15 +242,23 @@ export default function createScreen(): void {
     exitApp();
   });
 
-  const nodes = [
+  const nodesWithInput = [
     searchResultTable,
     searchLog,
     textbox,
     controller,
   ];
 
-  screen.append(barChart);
-  nodes.forEach((node) => {
+  const nodesWithoutInput = [
+    informationBox,
+    barChart,
+  ];
+
+  nodesWithoutInput.forEach((node) => {
+    screen.append(node);
+  });
+
+  nodesWithInput.forEach((node) => {
     screen.append(node);
     node.enableMouse();
     node.enableKeys();
