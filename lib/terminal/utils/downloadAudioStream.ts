@@ -1,8 +1,7 @@
 import { createWriteStream, unlinkSync } from 'fs';
-import { tmpNameSync } from 'tmp';
 import ytdl, { downloadOptions } from 'ytdl-core';
 import { Widgets } from 'blessed';
-import { resolve as resolvePath } from 'path';
+import getRandomTempName from './getRandomTempName';
 
 let path: string;
 
@@ -21,10 +20,8 @@ export function cleanUpTempFiles(filePaths: string[]): void {
 }
 
 function setTmpFilePath(): void {
-  const randomName = tmpNameSync();
-  const tmpFilePath = `${randomName}.mp4`;
-  const fullPath = resolvePath(tmpFilePath);
-  path = fullPath;
+  const randomName = getRandomTempName(15, '.mp4');
+  path = randomName;
 }
 
 export default async function downloadAudioStream(id: string, progressBar: Widgets.ProgressBarElement, screen: Widgets.Screen): Promise<void> {
