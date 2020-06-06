@@ -16,14 +16,12 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "resolveJsonModule": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true
   },
   "include": [
     "lib/**/*",
-    "types/**/*.d.ts",
-    "package.json"
+    "types/**/*.d.ts"
   ],
   "exclude": [
     ".vscode",
