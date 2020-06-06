@@ -7,7 +7,7 @@ Make a production build
 
 ## Configuration
 
-It looks for an API-Key with the variable `YT_API_KEY` in `process.env`, so either export one or put a `.env` file with the in `lib/google` folder and it will be loaded automatically.
+It looks for an API-Key with the variable `YT_API_KEY` in `process.env`, so either export one or put a `.env` file into the `dist` folder and it will be loaded automatically at start.
 
 You can generate an API-Key at the
 [Google Developers Console](https://console.developers.google.com/) it just needs to have access to the **YouTube Data API v3**.
