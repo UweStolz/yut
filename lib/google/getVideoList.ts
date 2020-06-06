@@ -23,7 +23,7 @@ async function getVideoDurations(id: string[]): Promise<string[]> {
       return date;
     }) as string[];
   } catch (err) {
-    console.error(err);
+    // Silently ignore error
   }
   return durations;
 }
@@ -41,7 +41,7 @@ async function getVideoList(query: string): Promise<youtube_v3.Schema$SearchList
     });
     result = data;
   } catch (err) {
-    console.error(err);
+    // Silently ignore error
   }
   return result;
 }
