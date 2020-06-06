@@ -171,13 +171,28 @@ export default function createScreen(): void {
     },
   });
 
+  const loadingBox = blessed.loading({
+    parent: screen,
+    border: 'line',
+    height: 5,
+    width: 20,
+    top: 'center',
+    left: 'center',
+    align: 'center',
+  });
+
   const controller = mediaController(screen);
 
   textbox.on('submit', async (data) => {
     if (data.length > 0) {
+      screen.append(loadingBox);
+      loadingBox.load('Loading search results..');
+      screen.render();
       appendFileSync('history.log', `\n${data}`);
       searchLog.add(data);
       const searchResult = await performSearch(data);
+      loadingBox.stop();
+      loadingBox.destroy();
       if (searchResult && searchResult.length > 0) {
         searchResultTable.clearItems();
         const tableData = [
