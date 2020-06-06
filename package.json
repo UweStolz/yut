@@ -1,5 +1,6 @@
 {
   "name": "yut",
+  "description": "YouTube terminal music player",
   "private": true,
   "scripts": {
     "start:dev": "yarn ts-node index.ts",

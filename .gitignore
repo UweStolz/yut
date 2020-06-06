@@ -1,3 +1,9 @@
+*
 node_modules
 dist
+!dist/electron/renderer/index.html
+!dist/yarn.lock
+!dist/package.json
+!*/
 *.log
+*.js
