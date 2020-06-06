@@ -8,7 +8,7 @@ function writeNewFile(data: string[]): void {
     const cleanFile = fileWithNewlines.toString().replace(/,/g, '');
     writeFileSync('history.log', cleanFile);
   } catch {
-    // Do nothing
+    // Silently ignore error
   }
 }
 
@@ -26,7 +26,7 @@ function getLogFile(): string[] {
       writeNewFile(splitFileText);
     }
   } catch {
-    // Do nothing
+    // Silently ignore error
   }
   return splitFileText;
 }
@@ -44,6 +44,6 @@ export default async function getLastLogEntries(searchLog: Widgets.Log): Promise
       });
     }
   } catch {
-    // Do nothing
+    // Silently ignore error
   }
 }
