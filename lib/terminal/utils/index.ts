@@ -1,6 +1,6 @@
 import downloadAudioStream, { cleanUpTempFiles, getPathToAudioFile } from './downloadAudioStream';
 import getLastLogEntries from './getLastLogEntries';
-import mediaControls from './mediaControls';
+import executeInRenderer from './executeInRenderer';
 import formatTotalSongLength from './formatTotalSongLength';
 
 export {
@@ -8,6 +8,6 @@ export {
   cleanUpTempFiles,
   getPathToAudioFile,
   getLastLogEntries,
-  mediaControls,
+  executeInRenderer,
   formatTotalSongLength,
 };

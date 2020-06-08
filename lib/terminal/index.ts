@@ -219,7 +219,7 @@ export default function createScreen(): void {
       await download(id, progressBar, screen);
     }
     const src = audioMapping[id];
-    await utils.mediaControls.playMedia(src);
+    await utils.executeInRenderer('playAudio', src);
   });
 
   ipcMain.on('currentSongPosition', (event, arg) => {
