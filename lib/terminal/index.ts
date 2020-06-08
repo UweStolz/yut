@@ -46,7 +46,7 @@ export default function createScreen(): void {
     label: 'Search results',
     align: 'left',
     width: '80%',
-    height: '80%',
+    height: '90%',
     shrink: false,
     focusable: true,
     keys: true,
@@ -94,14 +94,14 @@ export default function createScreen(): void {
     },
   });
 
-  const textbox = blessed.textbox({
-    label: 'Command line interface',
+  const searchBox = blessed.textbox({
+    label: 'Search',
     parent: screen,
     mouse: true,
     left: 0,
-    top: '+80%',
+    top: '+90%',
     width: '60%',
-    height: '20%',
+    height: '10%',
     keys: true,
     border: {
       type: 'line',
@@ -110,15 +110,16 @@ export default function createScreen(): void {
   });
 
   const informationBox = blessed.textbox({
-    label: 'Song information',
+    label: 'Playtime',
     parent: screen,
     mouse: false,
     keys: false,
     input: false,
+    align: 'center',
     left: '+60%',
-    top: '+80%',
+    top: '+90%',
     width: '20%',
-    height: '20%',
+    height: '10%',
     border: {
       type: 'line',
     },
@@ -184,7 +185,7 @@ export default function createScreen(): void {
 
   const controller = mediaController(screen);
 
-  textbox.on('submit', async (data) => {
+  searchBox.on('submit', async (data) => {
     if (data.length > 0) {
       screen.append(loadingBox);
       loadingBox.load('Loading search results..');
@@ -200,7 +201,7 @@ export default function createScreen(): void {
           ['ID', 'Title', 'Duration'],
           ...searchResult,
         ];
-        textbox.clearValue();
+        searchBox.clearValue();
         searchResultTable.setData(tableData);
         screen.render();
         searchResultTable.focus();
@@ -261,7 +262,7 @@ export default function createScreen(): void {
   const nodesWithInput = [
     searchResultTable,
     searchLog,
-    textbox,
+    searchBox,
     controller,
   ];
 
@@ -282,7 +283,7 @@ export default function createScreen(): void {
 
   utils.getLastLogEntries(searchLog);
 
-  textbox.focus();
+  searchBox.focus();
 
   screen.render();
 }
