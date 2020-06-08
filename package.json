@@ -3,6 +3,8 @@
   "author": {
     "name": "Uwe Stolz"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/UweStolz/yut",
   "version": "0.0.1",
   "description": "YouTube terminal music player",
   "private": true,
