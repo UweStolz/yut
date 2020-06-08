@@ -6,5 +6,6 @@ dist
 !dist/package.json
 !*/
 !lib/**/*.ts
+!tsconfig.build.json
 *.log
 *.js

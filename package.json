@@ -5,7 +5,7 @@
   "scripts": {
     "start:dev": "yarn ts-node index.ts",
     "build": "yarn run tsc -p ./tsconfig.json",
-    "build:prod": "yarn run tsc -p ./tsconfig.json && cd dist yarn install --production",
+    "build:prod": "yarn run tsc -p ./tsconfig.build.json && cd dist yarn install --production",
     "build:watch": "yarn run tsc -w -p ./tsconfig.json"
   },
   "dependencies": {
