@@ -4,9 +4,8 @@ import { Howl, Howler } from 'howler';
 Howler.usingWebAudio = true;
 let sound: Howl;
 let soundId: undefined|number;
-let analyser: AnalyserNode;
+let analyser: undefined|AnalyserNode;
 let dataArray: undefined|Uint8Array;
-let isMuted = false;
 let songPositionIntervalTimout: NodeJS.Timeout;
 
 function getCurrentPosition() {
@@ -17,11 +16,13 @@ function getCurrentPosition() {
 }
 
 function update(): void {
-  requestAnimationFrame(update);
-  if (sound.playing() && dataArray) {
+  const frame = requestAnimationFrame(update);
+  if (sound.playing() && dataArray && analyser) {
     analyser.getByteFrequencyData(dataArray);
     const data = dataArray.map((entry: number) => entry / 4);
     ipcRenderer.send('analyser', data);
+  } else {
+    cancelAnimationFrame(frame);
   }
 }
 
@@ -34,6 +35,15 @@ function getFrequencyData(): void {
   update();
 }
 
+function resetAnalyser() {
+  clearInterval(songPositionIntervalTimout);
+  if (analyser) {
+    analyser.disconnect();
+    analyser = undefined;
+    dataArray = undefined;
+  }
+}
+
 function initializeSound(src: string): void {
   sound = new Howl({
     src,
@@ -42,12 +52,22 @@ function initializeSound(src: string): void {
 }
 
 export function muteAudio(): void {
-  if (isMuted) {
-    Howler.mute(false);
-    isMuted = false;
-  } else {
-    Howler.mute(true);
-    isMuted = true;
+  Howler.mute(true);
+}
+
+export function unmuteAudio(): void {
+  Howler.mute(false);
+}
+
+export function enableLoopAudio(): void {
+  if (soundId) {
+    sound.loop(true, soundId);
+  }
+}
+
+export function disableLoopAudio(): void {
+  if (soundId) {
+    sound.loop(false, soundId);
   }
 }
 
@@ -56,13 +76,21 @@ export function playAudio(src: string): void {
     initializeSound(src);
   }
   if (!sound.playing()) {
-    soundId = sound.play();
-    sound.on('play', () => {
+    soundId = sound.play(soundId);
+    sound.once('play', () => {
       getCurrentPosition();
       getFrequencyData();
     });
-    sound.on('end', () => {
-      clearInterval(songPositionIntervalTimout);
+    sound.once('end', () => {
+      resetAnalyser();
+      ipcRenderer.send('soundEnd');
+    });
+    sound.once('loaderror', () => {
+      resetAnalyser();
+      ipcRenderer.send('soundEnd');
+    });
+    sound.once('playerror', () => {
+      resetAnalyser();
       ipcRenderer.send('soundEnd');
     });
   }
@@ -70,14 +98,14 @@ export function playAudio(src: string): void {
 
 export function pauseAudio(): void {
   if (soundId) {
-    clearInterval(songPositionIntervalTimout);
     sound.pause(soundId);
+    resetAnalyser();
   }
 }
 
 export function stopAudio(): void {
   if (soundId) {
-    clearInterval(songPositionIntervalTimout);
+    resetAnalyser();
     sound.stop(soundId);
   }
 }

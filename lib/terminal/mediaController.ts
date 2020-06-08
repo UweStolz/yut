@@ -1,5 +1,5 @@
 import blessed, { Widgets } from 'blessed';
-import { mediaControls } from './utils';
+import { executeInRenderer } from './utils';
 import { getMediaSrc } from './index';
 
 export default function mediaController(screen: Widgets.Screen): Widgets.BoxElement {
@@ -10,7 +10,6 @@ export default function mediaController(screen: Widgets.Screen): Widgets.BoxElem
       type: 'line',
     },
     focusable: true,
-    keys: true,
     mouse: true,
     top: '40%',
     left: '+80%',
@@ -21,21 +20,17 @@ export default function mediaController(screen: Widgets.Screen): Widgets.BoxElem
   const playButton = blessed.button({
     parent: mediaForm,
     mouse: true,
-    keys: true,
     shrink: true,
+    focusable: false,
     padding: {
       left: 1,
       right: 1,
     },
     left: 13,
     top: 1,
-    name: 'Play',
     content: 'Play ▶',
     style: {
       bg: 'blue',
-      focus: {
-        bg: 'red',
-      },
       hover: {
         bg: 'red',
       },
@@ -45,21 +40,17 @@ export default function mediaController(screen: Widgets.Screen): Widgets.BoxElem
   const pauseButton = blessed.button({
     parent: mediaForm,
     mouse: true,
-    keys: true,
     shrink: true,
+    focusable: false,
     padding: {
       left: 1,
       right: 1,
     },
-    left: '20%',
-    top: 3,
-    name: 'Pause',
+    left: '5%',
+    top: 1,
     content: 'Pause ||',
     style: {
       bg: 'blue',
-      focus: {
-        bg: 'red',
-      },
       hover: {
         bg: 'red',
       },
@@ -69,45 +60,57 @@ export default function mediaController(screen: Widgets.Screen): Widgets.BoxElem
   const stopButton = blessed.button({
     parent: mediaForm,
     mouse: true,
-    keys: true,
     shrink: true,
+    focusable: false,
     padding: {
       left: 1,
       right: 1,
     },
-    left: '55%',
-    top: 3,
-    name: 'Stop',
+    left: '65%',
+    top: 1,
     content: 'Stop ■',
     style: {
       bg: 'blue',
-      focus: {
-        bg: 'red',
-      },
       hover: {
         bg: 'red',
       },
     },
   });
 
-  const muteButton = blessed.button({
+  const loopButton = blessed.checkbox({
     parent: mediaForm,
     mouse: true,
-    keys: true,
     shrink: true,
+    focusable: false,
     padding: {
       left: 1,
       right: 1,
     },
-    left: '15%',
-    top: 1,
-    name: 'Mute',
+    left: '55%',
+    top: 3,
+    content: 'Loop',
+    style: {
+      bg: 'blue',
+      hover: {
+        bg: 'red',
+      },
+    },
+  });
+
+  const muteButton = blessed.checkbox({
+    parent: mediaForm,
+    mouse: true,
+    shrink: true,
+    focusable: false,
+    padding: {
+      left: 1,
+      right: 1,
+    },
+    left: '20%',
+    top: 3,
     content: 'Mute',
     style: {
       bg: 'blue',
-      focus: {
-        bg: 'red',
-      },
       hover: {
         bg: 'red',
       },
@@ -117,28 +120,39 @@ export default function mediaController(screen: Widgets.Screen): Widgets.BoxElem
   playButton.on('press', async () => {
     const src = getMediaSrc();
     if (src) {
-      await mediaControls.playMedia(src);
+      await executeInRenderer('playAudio', src);
     }
   });
-
   pauseButton.on('press', async () => {
-    await mediaControls.pauseMedia();
+    await executeInRenderer('pauseAudio');
   });
-
   stopButton.on('press', async () => {
-    await mediaControls.stopMedia();
+    await executeInRenderer('stopAudio');
+  });
+  muteButton.on('check', async () => {
+    await executeInRenderer('muteAudio');
+  });
+  muteButton.on('uncheck', async () => {
+    await executeInRenderer('unmuteAudio');
+  });
+  loopButton.on('check', async () => {
+    await executeInRenderer('enableLoopAudio');
+  });
+  loopButton.on('uncheck', async () => {
+    await executeInRenderer('disableLoopAudio');
   });
 
-  muteButton.on('press', async () => {
-    await mediaControls.muteMedia();
-  });
-
-  const nodes = [playButton, pauseButton, stopButton, muteButton];
+  const nodes = [
+    playButton,
+    pauseButton,
+    stopButton,
+    muteButton,
+    loopButton,
+  ];
 
   nodes.forEach((node) => {
     mediaForm.append(node);
     node.enableMouse();
-    node.enableKeys();
   });
 
   return mediaForm;
