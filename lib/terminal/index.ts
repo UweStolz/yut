@@ -12,7 +12,7 @@ interface AudioMapping {
   [id: string]: string;
 }
 
-const currentId = '';
+let currentId = '';
 const audioMapping: AudioMapping = {};
 let currentSongTotalLength: string;
 
@@ -21,6 +21,7 @@ async function download(id: string, progressBar: Widgets.ProgressBarElement, scr
     await utils.downloadAudioStream(id, progressBar, screen);
     const path = utils.getPathToAudioFile();
     audioMapping[id] = path;
+    currentId = id;
   }
 }
 
