@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   env: {
     node: true,
+    browser: true,
     es6: true,
   },
 
@@ -25,7 +26,7 @@ module.exports = {
         devDependencies: true, optionalDependencies: true, peerDependencies: true,
       },
     ],
-    '@typescript-eslint/ban-ts-ignore': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
     'max-len': [
       0,
       {
@@ -51,6 +52,7 @@ module.exports = {
         extensions: [
           '.js',
           '.ts',
+          '.json',
         ],
       },
     },

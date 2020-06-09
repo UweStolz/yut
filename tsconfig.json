@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "target": "ESNext",
+    "target": "ES6",
     "module": "commonjs",
     "lib": [
-      "ESNext",
+      "ES6",
+      "DOM",
+      "DOM.Iterable",
       "scripthost"
     ],
     "outDir": "dist",
@@ -16,5 +18,13 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "include": [
+    "lib/**/*",
+    "types/**/*.d.ts"
+  ],
+  "exclude": [
+    ".vscode",
+    "node_modules"
+  ]
 }

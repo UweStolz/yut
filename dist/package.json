@@ -1,0 +1,25 @@
+{
+  "name": "yut",
+  "author": {
+    "name": "Uwe Stolz"
+  },
+  "main": "index.js",
+  "version": "0.0.1",
+  "description": "YouTube terminal music player",
+  "scripts": {
+    "start": "electron index.js"
+  },
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "bresenham": "^0.0.4",
+    "dotenv": "^8.2.0",
+    "drawille": "^1.1.1",
+    "googleapis": "^52.1.0",
+    "howler": "^2.2.0",
+    "tslib": "^2.0.0",
+    "ytdl-core": "^2.1.7"
+  },
+  "devDependencies": {
+    "electron": "^9.0.3"
+  }
+}
