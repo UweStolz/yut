@@ -16,7 +16,7 @@ jobs:
         node-version: '12.x'
     - run: yarn install
     - run: yarn build
-    - run: cd dist && yarn install
+    - run: cd dist && yarn install --production
     - run: yarn dist
     - run: cd dist && zip yut-artifact-{{ github.ref }} yut-{{ github.ref }}.AppImage
 

@@ -46,6 +46,7 @@
       "output": "./out"
     },
     "linux": {
+      "category": "Audio",
       "target": "appImage"
     }
   }

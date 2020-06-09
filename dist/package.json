@@ -18,5 +18,8 @@
     "howler": "^2.2.0",
     "tslib": "^2.0.0",
     "ytdl-core": "^2.1.7"
+  },
+  "devDependencies": {
+    "electron": "^9.0.3"
   }
 }
