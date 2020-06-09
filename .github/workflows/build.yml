@@ -6,7 +6,7 @@ on:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 env: 
-  VERSION: \`cat package.json | jq -r .version`
+  VERSION: cat package.json | jq -r .version
 jobs:
   build:
     name: Upload Release Asset
