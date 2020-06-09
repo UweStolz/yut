@@ -1,6 +1,7 @@
 *
 node_modules
 dist
+!.github/workflows/build.yml
 !dist/electron/renderer/index.html
 !dist/yarn.lock
 !dist/package.json
