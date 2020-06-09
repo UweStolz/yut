@@ -4,10 +4,9 @@
 
 ### Release build
 
-Download the latest release
-LINK TO "LATEST" RELEASE
+Download the [latest](https://github.com/UweStolz/yut/releases/latest) release
 
-execute the `.appImage` file from a maximized terminal window
+execute the `.AppImage` file from a maximized terminal window
 
 ### Dev build
 
@@ -28,7 +27,7 @@ Execute
 
 It looks for an API-Key in the variable `YT_API_KEY` in your `process.env. You can either export one or depending on your setup, put a `.env` file with the key:
 -   into the `dist` folder
-- or next to the `.appImage` file
+- or next to the `.AppImage` file
 The  key will then be loaded automatically on start
 
 You can generate an API-Key at the
