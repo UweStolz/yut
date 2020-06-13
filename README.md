@@ -6,6 +6,9 @@
 
 Download the [latest](https://github.com/UweStolz/yut/releases/latest) release
 
+Make sure the AppImage is executable  
+`chmod +x x.AppImage`  
+
 execute the `.AppImage` file from a maximized terminal window
 
 ### Dev build
