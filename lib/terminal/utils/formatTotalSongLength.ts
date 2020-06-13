@@ -21,7 +21,6 @@ export default function formatTotalSongLength(IsoTime: string): string {
         if (seconds.toString(10).length === 1) {
           totalLength += `0${seconds}`;
         }
-        totalLength += `${seconds}`;
       } else {
         totalLength += '00';
       }

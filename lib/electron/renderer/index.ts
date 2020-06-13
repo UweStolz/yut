@@ -7,6 +7,7 @@ let soundId: undefined|number;
 let analyser: undefined|AnalyserNode;
 let dataArray: undefined|Uint8Array;
 let songPositionIntervalTimout: NodeJS.Timeout;
+let shouldLoop = false;
 
 function getCurrentPosition() {
   songPositionIntervalTimout = setInterval(() => {
@@ -60,12 +61,14 @@ export function unmuteAudio(): void {
 }
 
 export function enableLoopAudio(): void {
+  shouldLoop = true;
   if (soundId) {
     sound.loop(true, soundId);
   }
 }
 
 export function disableLoopAudio(): void {
+  shouldLoop = false;
   if (soundId) {
     sound.loop(false, soundId);
   }
@@ -78,12 +81,18 @@ export function playAudio(src: string): void {
   if (!sound.playing()) {
     soundId = sound.play(soundId);
     sound.once('play', () => {
+      if (shouldLoop) { sound.loop(true, soundId); }
       getCurrentPosition();
       getFrequencyData();
     });
     sound.once('end', () => {
-      resetAnalyser();
-      ipcRenderer.send('soundEnd');
+      if (sound.loop(soundId)) {
+        getCurrentPosition();
+        getFrequencyData();
+      } else {
+        resetAnalyser();
+        ipcRenderer.send('soundEnd');
+      }
     });
     sound.once('loaderror', () => {
       resetAnalyser();

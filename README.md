@@ -41,4 +41,6 @@ You can generate an API-Key at the
 
 ## License
 
+This application is just a little hobby project, so fork it, hack it have fun with it 🙂
+
 [MIT](LICENSE.md)

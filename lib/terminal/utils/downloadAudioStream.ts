@@ -1,6 +1,6 @@
-import { createWriteStream, unlinkSync } from 'fs';
 import ytdl, { downloadOptions } from 'ytdl-core';
 import { Widgets } from 'blessed';
+import { createWriteStream, unlinkSync } from './fs';
 import getRandomTempName from './getRandomTempName';
 
 let path: string;

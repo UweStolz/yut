@@ -1,6 +1,6 @@
 import { EOL } from 'os';
 import { Widgets } from 'blessed';
-import { readFileSync, existsSync, writeFileSync } from 'fs';
+import { readFileSync, existsSync, writeFileSync } from './fs';
 
 function writeNewFile(data: string[]): void {
   try {

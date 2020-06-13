@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 
 let win: BrowserWindow | null = null;
 
@@ -27,6 +27,8 @@ export function exitApp(): void {
     app.exit();
   }
 }
+
+export { ipcMain };
 
 app.on('ready', createWindow);
 app.allowRendererProcessReuse = true;

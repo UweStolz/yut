@@ -4,11 +4,10 @@
     "name": "Uwe Stolz"
   },
   "main": "index.js",
-  "version": "0.0.1",
+  "license": "MIT",
+  "homepage": "https://github.com/UweStolz/yut",
+  "version": "0.1.0",
   "description": "YouTube terminal music player",
-  "scripts": {
-    "start": "electron index.js"
-  },
   "dependencies": {
     "blessed": "^0.1.81",
     "bresenham": "^0.0.4",
