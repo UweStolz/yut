@@ -5,7 +5,7 @@
   },
   "license": "MIT",
   "homepage": "https://github.com/UweStolz/yut",
-  "version": "0.1.0-0",
+  "version": "1.0.0",
   "description": "YouTube terminal music player",
   "private": true,
   "scripts": {
@@ -28,15 +28,15 @@
   "devDependencies": {
     "@types/blessed": "0.1.17",
     "@types/bresenham": "^0.0.0",
-    "@types/howler": "^2.1.2",
+    "@types/howler": "^2.2.0",
     "@types/node": "^12.0.0",
     "@typescript-eslint/eslint-plugin": "^3.2.0",
     "@typescript-eslint/parser": "^3.2.0",
-    "electron": "^9.0.3",
+    "electron": "^9.0.4",
     "electron-builder": "^22.7.0",
     "eslint": "^7.2.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.21.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.21.2",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
   },

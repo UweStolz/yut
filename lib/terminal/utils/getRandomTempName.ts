@@ -1,7 +1,7 @@
 import { tmpdir } from 'os';
 import { join, resolve } from 'path';
 import { randomBytes, pseudoRandomBytes } from 'crypto';
-import { existsSync } from 'fs';
+import { existsSync } from './fs';
 
 const possibleChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 let retries = 10;

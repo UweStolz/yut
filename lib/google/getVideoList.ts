@@ -36,7 +36,7 @@ async function getVideoList(query: string): Promise<youtube_v3.Schema$SearchList
       fields: 'items(id(videoId),snippet(title))',
       type: ['video'],
       videoCategoryId: '10', // music
-      maxResults: 35,
+      maxResults: 40,
       part: ['snippet'],
     });
     result = data;

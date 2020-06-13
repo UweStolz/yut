@@ -1,12 +1,8 @@
 import blessed, { Widgets } from 'blessed';
-import { appendFileSync, existsSync } from 'fs';
-import { ipcMain } from 'electron';
-import calculatePoints from './calculatePoints';
 import performSearch from '../google/getVideoList';
 import * as utils from './utils';
-import { exitApp } from '../electron/main';
+import { exitApp, ipcMain } from '../electron/main';
 import mediaController from './mediaController';
-
 
 interface AudioMapping {
   [id: string]: string;
@@ -190,7 +186,7 @@ export default function createScreen(): void {
       screen.append(loadingBox);
       loadingBox.load('Loading search results..');
       screen.render();
-      appendFileSync('history.log', `\n${data}`);
+      utils.fs.appendFileSync('history.log', `\n${data}`);
       searchLog.add(data);
       const searchResult = await performSearch(data);
       loadingBox.stop();
@@ -213,7 +209,7 @@ export default function createScreen(): void {
     const selectedLine = data.content.trim().split(' ');
     const id = selectedLine[0];
     currentSongTotalLength = utils.formatTotalSongLength(selectedLine[selectedLine.length - 1]);
-    const doesFileExist = existsSync(audioMapping[id]);
+    const doesFileExist = utils.fs.existsSync(audioMapping[id]);
     if (!doesFileExist) {
       screen.append(progressBar);
       screen.render();
@@ -242,7 +238,7 @@ export default function createScreen(): void {
   });
 
   ipcMain.on('analyser', (event, arg) => {
-    const data = calculatePoints(arg);
+    const data = utils.calculatePoints(arg);
     barChart.setContent(data);
     screen.render();
   });
@@ -259,27 +255,19 @@ export default function createScreen(): void {
     exitApp();
   });
 
-  const nodesWithInput = [
+  const nodes = [
     searchResultTable,
     searchLog,
     searchBox,
     controller,
-  ];
-
-  const nodesWithoutInput = [
     informationBox,
     barChart,
   ];
 
-  nodesWithoutInput.forEach((node) => {
+  nodes.forEach((node) => {
     screen.append(node);
   });
-
-  nodesWithInput.forEach((node) => {
-    screen.append(node);
-    node.enableMouse();
-    node.enableKeys();
-  });
+  searchBox.enableMouse();
 
   utils.getLastLogEntries(searchLog);
 
