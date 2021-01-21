@@ -36,6 +36,11 @@ The  key will then be loaded automatically on start
 You can generate an API-Key at the
 [Google Developers Console](https://console.developers.google.com/) it just needs to have access to the **YouTube Data API v3**.
 
+### Troubleshooting
+
+In case of missing dependencies have a look at:
+- https://github.com/puppeteer/puppeteer/blob/main/docs/troubleshooting.md#chrome-headless-doesnt-launch-on-unix
+
 ## Built with
 
 [Howler.Js](https://howlerjs.com/)  
